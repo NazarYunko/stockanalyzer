@@ -37,17 +37,25 @@ public class YahooStockService implements StockService {
             if (!from.isBlank() && !to.isBlank()) {
                 var fromCalendar = GregorianCalendar.from(ZonedDateTime.ofInstant(Instant.parse(from), ZoneId.systemDefault()));
                 var toCalendar = GregorianCalendar.from(ZonedDateTime.ofInstant(Instant.parse(to), ZoneId.systemDefault()));
-                return YahooFinance.get(symbol, fromCalendar, toCalendar, interval);
+                return updateExchange(YahooFinance.get(symbol, fromCalendar, toCalendar, interval));
             } else if (to.isBlank() && !from.isBlank()) {
                 var fromCalendar = GregorianCalendar.from(ZonedDateTime.ofInstant(Instant.parse(from), ZoneId.systemDefault()));
-                return YahooFinance.get(symbol, fromCalendar, interval);
+                return updateExchange(YahooFinance.get(symbol, fromCalendar, interval));
             } else {
-                return YahooFinance.get(symbol, interval);
+                return updateExchange(YahooFinance.get(symbol, interval));
             }
 
         } catch (IOException e) {
             throw new YahooFinanceException(e.getMessage());
         }
+    }
+
+    private Stock updateExchange(Stock stock) {
+        if (stock.getStockExchange().contains("Nasdaq")) {
+            stock.setStockExchange("NASDAQ");
+        }
+
+        return stock;
     }
 
     @Override

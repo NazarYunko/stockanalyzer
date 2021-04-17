@@ -24,8 +24,8 @@ public class StockController {
 
     @GetMapping(value = RETRIEVE_SINGLE_STOCK, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StockResponse> find(@PathVariable("stockSymbol") String symbol,
-                                              @RequestParam("from") String from,
-                                              @RequestParam("to") String to,
+                                              @RequestParam(value = "from", required = false) String from,
+                                              @RequestParam(value = "to", required = false) String to,
                                               @NotNull @RequestParam("interval") Interval interval) {
         var stock = stockService.findBy(symbol, from, to, interval);
         return ResponseEntity.ok(new StockResponse(stock));
