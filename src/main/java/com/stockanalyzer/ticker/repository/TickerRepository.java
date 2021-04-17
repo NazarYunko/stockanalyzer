@@ -22,7 +22,7 @@ public interface TickerRepository extends JpaRepository<Ticker, Long> {
             "AND(:sector IS NULL OR t.sector=:sector)" +
             "AND(:industry IS NULL OR t.industry=:industry)",
             nativeQuery = true,
-            countQuery = "SELECT count(t.*) FROM ticker t " +
+            countQuery = "SELECT count(*) FROM ticker t " +
                     "WHERE (:country IS NULL OR t.country=:country)" +
                     "AND(:sector IS NULL OR t.sector=:sector)" +
                     "AND(:industry IS NULL OR t.industry=:industry)")
