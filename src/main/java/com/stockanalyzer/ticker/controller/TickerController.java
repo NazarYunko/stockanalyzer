@@ -47,9 +47,9 @@ public class TickerController {
 
 
     @GetMapping(value = TICKERS_COUNTRIES, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TickerCountryResponse> findAllCountries() {
+    public ResponseEntity<List<TickerCountryItem>> findAllCountries() {
         var tickerCountries = tickerCountries(tickerService.findAllCountries());
-        return ResponseEntity.ok(new TickerCountryResponse(tickerCountries));
+        return ResponseEntity.ok(tickerCountries);
     }
 
     private List<TickerCountryItem> tickerCountries(Set<String> countries) {
@@ -57,9 +57,9 @@ public class TickerController {
     }
 
     @GetMapping(value = TICKERS_INDUSTRIES, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TickerIndustryResponse> findAllIndustries() {
+    public ResponseEntity<List<TickerIndustryItem>> findAllIndustries() {
         var tickerIndustries = tickerIndustries(tickerService.findAllIndustries());
-        return ResponseEntity.ok(new TickerIndustryResponse(tickerIndustries));
+        return ResponseEntity.ok(tickerIndustries);
     }
 
     private List<TickerIndustryItem> tickerIndustries(Set<String> industries) {
@@ -67,9 +67,9 @@ public class TickerController {
     }
 
     @GetMapping(value = TICKERS_SECTORS, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TickerSectorResponse> findAllSectors() {
+    public ResponseEntity<List<TickerSectorItem>> findAllSectors() {
         var tickerSectors = tickerSectors(tickerService.findAllSectors());
-        return ResponseEntity.ok(new TickerSectorResponse(tickerSectors));
+        return ResponseEntity.ok(tickerSectors);
     }
 
     private List<TickerSectorItem> tickerSectors(Set<String> sectors) {
