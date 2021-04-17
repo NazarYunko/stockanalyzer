@@ -10,6 +10,8 @@ import com.stockanalyzer.ticker.wire.TickerItem;
 import com.stockanalyzer.ticker.wire.TickerResponse;
 import com.stockanalyzer.ticker.wire.TickerSectorItem;
 import com.stockanalyzer.ticker.wire.TickerSectorResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,16 +37,14 @@ public class TickerController {
     }
 
     @GetMapping(value = TICKERS_ROOT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TickerResponse> findAllByCountryAndSectorAndIndustry(@RequestParam("country") String country,
-                                                                               @RequestParam("sector") String sector,
-                                                                               @RequestParam("industry") String industry) {
-        var tickers = tickerItems(tickerService.findAllByCountryAndSectorAndIndustry(country, sector, industry));
-        return ResponseEntity.ok(new TickerResponse(tickers));
+    public ResponseEntity<Page<TickerItem>> findAllByCountryAndSectorAndIndustry(@RequestParam(value = "country", required = false) String country,
+                                                                                 @RequestParam(value = "sector", required = false) String sector,
+                                                                                 @RequestParam(value = "industry", required = false) String industry,
+                                                                                 Pageable pageable) {
+        var tickerPage = tickerService.findAllByCountryAndSectorAndIndustry(country, sector, industry, pageable);
+        return ResponseEntity.ok(tickerPage.map(TickerItem::new));
     }
 
-    private List<TickerItem> tickerItems(List<Ticker> tickers) {
-        return tickers.stream().map(TickerItem::new).collect(Collectors.toList());
-    }
 
     @GetMapping(value = TICKERS_COUNTRIES, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TickerCountryResponse> findAllCountries() {

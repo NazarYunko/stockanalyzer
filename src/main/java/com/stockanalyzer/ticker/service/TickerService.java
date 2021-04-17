@@ -2,6 +2,8 @@ package com.stockanalyzer.ticker.service;
 
 import com.stockanalyzer.ticker.domain.Ticker;
 import com.stockanalyzer.ticker.repository.TickerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class TickerService {
         this.tickerRepository = tickerRepository;
     }
 
-    public List<Ticker> findAllByCountryAndSectorAndIndustry(String country, String sector, String industry) {
-        return tickerRepository.findAllByCountryAndSectorAndIndustry(country, sector, industry);
+    public Page<Ticker> findAllByCountryAndSectorAndIndustry(String country, String sector, String industry, Pageable pageable) {
+        return tickerRepository.findAllByCountryAndSectorAndIndustry(country, sector, industry, pageable);
     }
 
     public Set<String> findAllCountries() {

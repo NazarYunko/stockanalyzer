@@ -1,6 +1,8 @@
 package com.stockanalyzer.ticker.repository;
 
 import com.stockanalyzer.ticker.domain.Ticker;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,10 +21,15 @@ public interface TickerRepository extends JpaRepository<Ticker, Long> {
             "WHERE (:country IS NULL OR t.country=:country)" +
             "AND(:sector IS NULL OR t.sector=:sector)" +
             "AND(:industry IS NULL OR t.industry=:industry)",
-            nativeQuery = true)
-    List<Ticker> findAllByCountryAndSectorAndIndustry(@Param("country") String country,
+            nativeQuery = true,
+            countQuery = "SELECT count(t.*) FROM ticker t " +
+                    "WHERE (:country IS NULL OR t.country=:country)" +
+                    "AND(:sector IS NULL OR t.sector=:sector)" +
+                    "AND(:industry IS NULL OR t.industry=:industry)")
+    Page<Ticker> findAllByCountryAndSectorAndIndustry(@Param("country") String country,
                                                       @Param("sector") String sector,
-                                                      @Param("industry") String industry);
+                                                      @Param("industry") String industry,
+                                                      Pageable pageable);
 
     @Query(value = "SELECT DISTINCT t.country FROM ticker t " +
             "WHERE t.country!=''", nativeQuery = true)
