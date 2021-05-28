@@ -1,10 +1,6 @@
 package com.stockanalyzer.ticker.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -19,16 +15,19 @@ public class Ticker {
 
     private String name;
 
-    private String country;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Country country;
 
-    private String sector;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Sector sector;
 
-    private String industry;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    private Industry industry;
 
     public Ticker() {
     }
 
-    public Ticker(String symbol, String name, String country, String sector, String industry) {
+    public Ticker(String symbol, String name, Country country, Sector sector, Industry industry) {
         this.symbol = symbol;
         this.name = name;
         this.country = country;
@@ -60,27 +59,27 @@ public class Ticker {
         this.name = name;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
-    public String getSector() {
+    public Sector getSector() {
         return sector;
     }
 
-    public void setSector(String sector) {
+    public void setSector(Sector sector) {
         this.sector = sector;
     }
 
-    public String getIndustry() {
+    public Industry getIndustry() {
         return industry;
     }
 
-    public void setIndustry(String industry) {
+    public void setIndustry(Industry industry) {
         this.industry = industry;
     }
 

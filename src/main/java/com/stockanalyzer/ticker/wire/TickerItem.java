@@ -29,9 +29,9 @@ public class TickerItem {
         this.id = ticker.getId();
         this.symbol = ticker.getSymbol();
         this.name = ticker.getName();
-        this.country = ticker.getCountry();
-        this.sector = ticker.getSector();
-        this.industry = ticker.getIndustry();
+        this.country = ticker.getCountry().getName();
+        this.sector = ticker.getSector().getName();
+        this.industry = ticker.getIndustry().getName();
     }
 
     public long getId() {
