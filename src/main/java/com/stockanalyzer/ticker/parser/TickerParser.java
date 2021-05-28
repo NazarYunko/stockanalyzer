@@ -53,7 +53,7 @@ public class TickerParser implements ResourceFileParser<List<Ticker>> {
         try {
             return tickerInfo[index];
         } catch (RuntimeException e) {
-            return "<no data>";
+            return "";
         }
     }
 }

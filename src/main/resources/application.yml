@@ -16,6 +16,7 @@ spring:
 
 stockanalyzer:
   parse-stocks: false # should be false if ddl-auto=update
+  ticker-path: classpath:stock/stocks.csv
 
 server:
   address: localhost

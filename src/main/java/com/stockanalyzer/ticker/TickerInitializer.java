@@ -13,8 +13,6 @@ import java.util.List;
 @Component
 public class TickerInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
-    private static final String TICKERS_PATH = "classpath:stock/stocks.csv";
-
     private final ApplicationProperties applicationProperties;
     private final ResourceFileParser<List<Ticker>> tickersParser;
     private final TickerRepository tickerRepository;
@@ -30,7 +28,7 @@ public class TickerInitializer implements ApplicationListener<ApplicationReadyEv
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         if (applicationProperties.isParseStocks()) {
-            var tickers = tickersParser.parse(TICKERS_PATH);
+            var tickers = tickersParser.parse(applicationProperties.getTickerPath());
             tickerRepository.saveAll(tickers);
         }
     }
