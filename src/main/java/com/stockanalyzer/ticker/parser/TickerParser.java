@@ -8,14 +8,11 @@ import com.stockanalyzer.ticker.exception.TickerParseFailedException;
 import com.stockanalyzer.ticker.repository.CountryRepository;
 import com.stockanalyzer.ticker.repository.IndustryRepository;
 import com.stockanalyzer.ticker.repository.SectorRepository;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +34,7 @@ public class TickerParser implements ResourceFileParser<List<Ticker>> {
     public List<Ticker> parse(String filePath) {
         List<Ticker> tickers = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(getFile(filePath)))) {
+        try (BufferedReader reader = new BufferedReader(getFile(filePath))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] tickerInfo = line.split(SEPARATOR);
@@ -59,8 +56,8 @@ public class TickerParser implements ResourceFileParser<List<Ticker>> {
         return tickers;
     }
 
-    private File getFile(String filePath) throws FileNotFoundException {
-        return ResourceUtils.getFile(filePath);
+    private InputStreamReader getFile(String filePath) throws IOException {
+        return new InputStreamReader(new ClassPathResource(filePath).getInputStream());
     }
 
     private Ticker buildTicker(String symbol, String name, Country country, Sector sector, Industry industry) {
